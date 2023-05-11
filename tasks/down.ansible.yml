@@ -1,0 +1,24 @@
+- name: Check if destination directory exists
+  ansible.builtin.stat:
+    path: "{{ docker_deploy_destination }}"
+  register: deploy_dir
+
+- name: Docker compose Down
+  ansible.builtin.command: >-
+    {{ docker_deploy_compose_command }}
+    --file {{ docker_deploy_destination }}/{{ docker_deploy_compose_file }}
+    down
+  register: command_result
+  notify: Docker prune
+  become: true
+  when: deploy_dir.stat.exists and deploy_dir.stat.isdir
+  changed_when: |
+    ("Removed" in command_result.stderr) or
+    ("Stopped" in command_result.stderr)
+
+- name: Remove destination directory
+  ansible.builtin.file:
+    path: "{{ docker_deploy_destination }}"
+    state: absent
+  become: true
+  when: docker_deploy_absent_remove is true and deploy_dir.stat.exists and deploy_dir.stat.isdir

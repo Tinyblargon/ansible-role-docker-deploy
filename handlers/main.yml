@@ -1,0 +1,6 @@
+- name: Docker prune
+  ansible.builtin.command: 'docker system prune --all --force'
+  register: command_result
+  become: true
+  when: docker_deploy_prune is true
+  changed_when: command_result.stdout_lines | length != 1

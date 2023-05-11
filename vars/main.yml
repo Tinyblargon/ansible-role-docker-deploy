@@ -1,0 +1,1 @@
+docker_deploy_compose_command: "docker compose"

@@ -1,0 +1,18 @@
+collections:
+  - ansible.posix
+
+galaxy_info:
+  role_name: docker_deploy
+  author: Tinyblargon
+  description: Ansible role to deploy a docker compose stack (file).
+  license: MIT
+  min_ansible_version: '2.14.1'
+  platforms:
+    - name: Debian
+      versions:
+        - buster
+        - bullseye
+  galaxy_tags:
+    - docker
+    - compose
+    - deploy

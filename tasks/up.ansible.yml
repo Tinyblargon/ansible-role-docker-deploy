@@ -1,0 +1,56 @@
+- name: Update apt and install rsync
+  ansible.builtin.apt:
+    name:
+      - sudo
+      - rsync
+    cache_valid_time: 3600
+    update_cache: true
+  register: apt_action
+  until: apt_action is success or ('Failed to lock apt for exclusive operation' not in apt_action.msg and '/var/lib/dpkg/lock' not in apt_action.msg)
+  become: true
+
+- name: Copy the deployment
+  ansible.posix.synchronize:
+    src: "{{ docker_deploy_source }}/"
+    dest: "{{ docker_deploy_destination }}"
+    archive: false
+    checksum: true
+    owner: false
+    group: false
+    delete: true
+    dirs: true
+    recursive: true
+    rsync_opts:
+      - '--exclude="*.example"'
+  register: docker_deploy_files_changed
+  become: true
+
+- name: Force Docker compose Down
+  ansible.builtin.command: >-
+    {{ docker_deploy_compose_command }}
+    --file {{ docker_deploy_destination }}/{{ docker_deploy_compose_file }}
+    down
+  register: command_result
+  become: true
+  when: docker_deploy_recreate is true and docker_deploy_files_changed is changed
+  changed_when: |
+    ("Removed" in command_result.stderr) or
+    ("Stopped" in command_result.stderr)
+
+- name: Docker compose up
+  ansible.builtin.command: >-
+    {{ docker_deploy_compose_command }}
+    --file {{ docker_deploy_destination }}/{{ docker_deploy_compose_file }}
+    {{ '--compatibility' if docker_deploy_compatibility is true else '' }}
+    up
+    --detach
+    --quiet-pull
+    {{ '--remove-orphans' if docker_deploy_remove_orphans is true else '' }}
+  notify: Docker prune
+  register: command_result
+  become: true
+  changed_when: |
+    ("Created" in command_result.stderr) or
+    ("Recreated" in command_result.stderr) or
+    ("Removed" in command_result.stderr) or
+    ("Started" in command_result.stderr)

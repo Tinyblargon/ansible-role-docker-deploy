@@ -1,0 +1,14 @@
+- name: Set compose command
+  ansible.builtin.set_fact:
+    docker_deploy_compose_command: "docker-compose"
+  when: docker_deploy_compose_plugin is false
+
+- name: Deploy docker stack
+  ansible.builtin.include_tasks:
+    file: up.ansible.yml
+  when: docker_deploy_state | lower == "present"
+
+- name: Remove docker stack
+  ansible.builtin.include_tasks:
+    file: down.ansible.yml
+  when: docker_deploy_state | lower == "absent"
