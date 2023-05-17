@@ -25,18 +25,6 @@
   register: docker_deploy_files_changed
   become: true
 
-- name: Force Docker compose Down
-  ansible.builtin.command: >-
-    {{ docker_deploy_compose_command }}
-    --file {{ docker_deploy_destination }}/{{ docker_deploy_compose_file }}
-    down
-  register: command_result
-  become: true
-  when: docker_deploy_recreate is true and docker_deploy_files_changed is changed
-  changed_when: |
-    ("Removed" in command_result.stderr) or
-    ("Stopped" in command_result.stderr)
-
 - name: Docker compose up
   ansible.builtin.command: >-
     {{ docker_deploy_compose_command }}
@@ -44,6 +32,7 @@
     {{ '--compatibility' if docker_deploy_compatibility is true else '' }}
     up
     --detach
+    {{ '--force-recreate' if (docker_deploy_recreate is true and docker_deploy_files_changed is changed) else '' }}
     --quiet-pull
     {{ '--remove-orphans' if docker_deploy_remove_orphans is true else '' }}
   notify: Docker prune
