@@ -1,5 +1,6 @@
 docker_deploy_source: "docker-deploy"
 docker_deploy_destination: "/opt/docker-deploy"
+docker_deploy_build: false
 docker_deploy_compose_file: "docker-compose.yml"
 docker_deploy_compatibility: true
 docker_deploy_remove_orphans: true

@@ -31,6 +31,7 @@
     --file {{ docker_deploy_destination }}/{{ docker_deploy_compose_file }}
     {{ '--compatibility' if docker_deploy_compatibility is true else '' }}
     up
+    {{ '--build' if (docker_deploy_build is true and docker_deploy_files_changed is changed) else '' }}
     --detach
     {{ '--force-recreate' if (docker_deploy_recreate is true and docker_deploy_files_changed is changed) else '' }}
     --quiet-pull
