@@ -64,6 +64,7 @@ Ansible role to deploy a docker compose stack (file).
         docker_deploy_compose_plugin: false
         docker_deploy_prune: true
         docker_deploy_state: "absent"
+        docker_deploy_absent_volume: true
         docker_deploy_absent_remove: true
 ```
 
