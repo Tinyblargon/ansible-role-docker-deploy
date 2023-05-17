@@ -29,6 +29,7 @@ Ansible role to deploy a docker compose stack (file).
 | docker_deploy_compose_plugin:| bool    | true                | Specify if the `docker compose` or `docker-compose` command should be used, `true` for `docker compose`, `false` for `docker-compose`.|
 | docker_deploy_prune:         | bool    | true                | Whether command `docker system prune --all --force` should be executed after a change was made to the compose deployment.|
 | docker_deploy_state:         | string  | "present"           | When `"present"` the `docker_deploy_source:` wil be synced to the `docker_deploy_destination:` and the `docker_deploy_compose_file:` will be brought up. When `"absent"` the `docker_deploy_compose_file:` in `docker_deploy_destination:` will be brought down.|
+| docker_deploy_absent_volume: | bool    | false                | Only applies when `docker_deploy_state:` is `"absent"`. Enables the --volumes flag when bringing down the compose file, this will delete all volumes that are specified in the compose file. |
 | docker_deploy_absent_remove: | bool    | false                | Only applies when `docker_deploy_state:` is `"absent"`. when `true` the `docker_deploy_destination:` will be deleted. |
 
 ## Example Playbooks

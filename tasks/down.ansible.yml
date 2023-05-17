@@ -8,6 +8,7 @@
     {{ docker_deploy_compose_command }}
     --file {{ docker_deploy_destination }}/{{ docker_deploy_compose_file }}
     down
+    {{ '--volumes' if docker_deploy_absent_volume is true else '' }}
   register: command_result
   notify: Docker prune
   become: true
