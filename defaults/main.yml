@@ -6,7 +6,7 @@ docker_deploy_compatibility: true
 docker_deploy_remove_orphans: true
 docker_deploy_recreate: false
 docker_deploy_compose_plugin: true
-docker_deploy_prune: true
+docker_deploy_prune: ["image"]
 docker_deploy_state: "present"
 docker_deploy_absent_volume: false
 docker_deploy_absent_remove: false

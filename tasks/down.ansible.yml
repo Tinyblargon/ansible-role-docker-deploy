@@ -10,7 +10,7 @@
     down
     {{ '--volumes' if docker_deploy_absent_volume is true else '' }}
   register: command_result
-  notify: Docker prune
+  notify: docker prune
   become: true
   when: deploy_dir.stat.exists and deploy_dir.stat.isdir
   changed_when: |

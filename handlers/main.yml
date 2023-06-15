@@ -1,6 +1,47 @@
-- name: Docker prune
+- name: Docker prune system
   ansible.builtin.command: 'docker system prune --all --force'
+  listen: "docker prune"
   register: command_result
   become: true
-  when: docker_deploy_prune is true
+  when: ( docker_deploy_prune | type_debug == "list" ) and ("system" in docker_deploy_prune)
+  changed_when: command_result.stdout_lines | length != 1
+
+- name: Docker prune image
+  ansible.builtin.command: 'docker image prune --all --force'
+  listen: "docker prune"
+  register: command_result
+  become: true
+  when: ( docker_deploy_prune | type_debug == "list" ) and ("image" in docker_deploy_prune)
+  changed_when: command_result.stdout_lines | length != 1
+
+- name: Docker prune container
+  ansible.builtin.command: 'docker container prune --force'
+  listen: "docker prune"
+  register: command_result
+  become: true
+  when: ( docker_deploy_prune | type_debug == "list" ) and ("container" in docker_deploy_prune)
+  changed_when: command_result.stdout_lines | length != 1
+
+- name: Docker prune network
+  ansible.builtin.command: 'docker network prune --force'
+  listen: "docker prune"
+  register: command_result
+  become: true
+  when: ( docker_deploy_prune | type_debug == "list" ) and ("network" in docker_deploy_prune)
+  changed_when: command_result.stdout_lines | length != 1
+
+- name: Docker prune builder
+  ansible.builtin.command: 'docker builder prune --all --force'
+  listen: "docker prune"
+  register: command_result
+  become: true
+  when: ( docker_deploy_prune | type_debug == "list" ) and ("builder" in docker_deploy_prune)
+  changed_when: command_result.stdout_lines | length != 1
+
+- name: Docker prune volume
+  ansible.builtin.command: 'docker volume prune --all --force'
+  listen: "docker prune"
+  register: command_result
+  become: true
+  when: ( docker_deploy_prune | type_debug == "list" ) and ("volume" in docker_deploy_prune)
   changed_when: command_result.stdout_lines | length != 1
