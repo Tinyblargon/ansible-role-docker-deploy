@@ -18,8 +18,8 @@ Ansible role to deploy a docker compose stack (file).
 
 ## Role Variables
 
-| **Variable Name**           | **Type**| **Default Value**   | **Description**|
-| :---------------------------| :------:| :------------------:| :--------------|
+| **Variable Name**            | **Type**| **Default Value**   | **Description**|
+| :----------------------------| :------:| :------------------:| :--------------|
 | docker_deploy_source:        | string  | "docker-deploy"     | The local directory containing the docker deployment and compose file. This directory is relative to the main playbooks directory.|
 | docker_deploy_destination:   | string  | "/opt/docker-deploy"| The destination folder the deployment should be cloned to.|
 | docker_deploy_compose_file:  | string  | "docker-compose.yml"| The name of the docker compose file to bring up.|
