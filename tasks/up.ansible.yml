@@ -21,8 +21,7 @@
     delete: true
     dirs: true
     recursive: true
-    rsync_opts:
-      - '--exclude="*.example"'
+    rsync_opts: "{{ docker_deploy_rsync_opts }}"
   register: docker_deploy_files_changed
   become: true
 
