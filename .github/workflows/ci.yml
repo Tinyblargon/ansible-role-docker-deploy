@@ -4,7 +4,7 @@ name: CI
   pull_request:
   push:
     branches:
-      - master
+      - main
 
 env:
   CUSTOM_DIR: 'tinyblargon.docker_deploy'
