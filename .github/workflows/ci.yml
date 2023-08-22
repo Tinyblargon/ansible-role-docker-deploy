@@ -6,12 +6,9 @@ name: CI
     branches:
       - main
 
-env:
-  CUSTOM_DIR: 'tinyblargon.docker_deploy'
-
 defaults:
   run:
-    working-directory: '${{ env.CUSTOM_DIR }}'
+    working-directory: 'tinyblargon.docker_deploy'
 
 jobs:
 
@@ -22,7 +19,7 @@ jobs:
       - name: Check out the codebase.
         uses: actions/checkout@v2
         with:
-          path: '${{ env.CUSTOM_DIR }}'
+          path: 'tinyblargon.docker_deploy'
 
       - name: Set up Python 3.
         uses: actions/setup-python@v2
