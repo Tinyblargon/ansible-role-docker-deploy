@@ -1,3 +1,4 @@
+---
 - name: Check if destination directory exists
   ansible.builtin.stat:
     path: "{{ docker_deploy_destination }}"
@@ -22,4 +23,6 @@
     path: "{{ docker_deploy_destination }}"
     state: absent
   become: true
-  when: docker_deploy_absent_remove is true and deploy_dir.stat.exists and deploy_dir.stat.isdir
+  when: docker_deploy_absent_remove is true
+    and deploy_dir.stat.exists
+    and deploy_dir.stat.isdir

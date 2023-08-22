@@ -1,3 +1,4 @@
+---
 - name: Set compose command
   ansible.builtin.set_fact:
     docker_deploy_compose_command: "docker-compose"

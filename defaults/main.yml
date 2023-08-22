@@ -1,3 +1,4 @@
+---
 docker_deploy_source: "docker-deploy"
 docker_deploy_destination: "/opt/docker-deploy"
 docker_deploy_build: false
