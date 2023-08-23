@@ -3,10 +3,10 @@ docker_deploy_source: "docker-deploy"
 docker_deploy_destination: "/opt/docker-deploy"
 docker_deploy_build: false
 docker_deploy_compose_file: "docker-compose.yml"
+docker_deploy_compose_command: ""
 docker_deploy_compatibility: true
 docker_deploy_remove_orphans: true
 docker_deploy_recreate: false
-docker_deploy_compose_plugin: true
 docker_deploy_prune: ["image"]
 docker_deploy_state: "present"
 docker_deploy_rsync_opts: ['--exclude="*.example"']

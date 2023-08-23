@@ -1,8 +1,13 @@
 ---
+- name: Detect compose edition
+  ansible.builtin.include_tasks:
+    file: detect.ansible.yml
+  when: docker_deploy_compose_command == ""
+
 - name: Set compose command
   ansible.builtin.set_fact:
-    docker_deploy_compose_command: "docker-compose"
-  when: docker_deploy_compose_plugin is false
+    docker_deploy_command: "{{ docker_deploy_compose_command }}"
+  when: docker_deploy_compose_command != ""
 
 - name: Deploy docker stack
   ansible.builtin.include_tasks:

@@ -27,7 +27,7 @@
 
 - name: Docker compose up
   ansible.builtin.command: >-
-    {{ docker_deploy_compose_command }}
+    {{ docker_deploy_command }}
     --file {{ docker_deploy_destination }}/{{ docker_deploy_compose_file }}
     {{ '--compatibility' if docker_deploy_compatibility is true else '' }}
     up

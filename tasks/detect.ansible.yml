@@ -1,0 +1,25 @@
+---
+- name: Gather installed packages
+  ansible.builtin.package_facts:
+    manager: auto
+
+- name: Use docker compose plugin
+  ansible.builtin.set_fact:
+    docker_deploy_command: "docker compose"
+  when: >-
+    'docker-compose-plugin' in ansible_facts.packages
+    and docker_deploy_command == ""
+
+- name: Use legacy docker-compose
+  ansible.builtin.set_fact:
+    docker_deploy_command: "docker-compose"
+  when: >-
+    'docker-compose' in ansible_facts.packages
+    and docker_deploy_command == ""
+
+- name: Undable to detect installed compose edition
+  ansible.builtin.fail:
+    msg: >-
+      Unable to detect installed compose edition.
+      Please install either docker-compose or docker-compose-plugin.
+  when: docker_deploy_command == ""

@@ -1,2 +1,2 @@
 ---
-docker_deploy_compose_command: "docker compose"
+docker_deploy_command: ""
