@@ -22,6 +22,11 @@
       changed_when: false
       failed_when: systemctl_status.rc > 1
 
+    - name: Create tmp dir for docker-compose file
+      ansible.builtin.tempfile:
+        state: directory
+      register: tempdir
+
     - name: Create docker file for test deployment
       ansible.builtin.copy:
         content: |
@@ -30,7 +35,7 @@
             helloworld:
               image: hello-world:latest
               restart: unless-stopped
-        dest: docker-deploy/docker-compose.yml
+        dest: "{{ tempdir.path }}/docker-compose.yml"
 
   roles:
     - role: geerlingguy.docker
@@ -39,6 +44,8 @@
     - role: tinyblargon.docker_deploy
       vars:
         docker_deploy_state: present
+        docker_deploy_source: "{{ tempdir.path }}"
     - role: tinyblargon.docker_deploy
       vars:
         docker_deploy_state: absent
+        docker_deploy_source: "{{ tempdir.path }}"
