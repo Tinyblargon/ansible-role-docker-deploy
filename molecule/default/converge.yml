@@ -38,9 +38,9 @@
         dest: "{{ tempdir.path }}/docker-compose.yml"
 
   roles:
-    - role: geerlingguy.docker
-      vars:
-        docker_install_compose_plugin: true
+    # - role: geerlingguy.docker
+    #   vars:
+    #     docker_install_compose_plugin: true
     - role: tinyblargon.docker_deploy
       vars:
         docker_deploy_state: present
