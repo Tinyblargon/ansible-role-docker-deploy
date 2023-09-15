@@ -1,0 +1,49 @@
+---
+- name: Converge
+  hosts: localhost
+  become: true
+
+  pre_tasks:
+    - name: Update apt cache.
+      ansible.builtin.apt:
+        update_cache: true
+        cache_valid_time: 900
+      when: ansible_os_family == 'Debian'
+
+    - name: Wait for systemd to complete initialization.
+      ansible.builtin.command: systemctl is-system-running
+      register: systemctl_status
+      until: >
+        'running' in systemctl_status.stdout or
+        'degraded' in systemctl_status.stdout
+      retries: 30
+      delay: 5
+      when: ansible_service_mgr == 'systemd'
+      changed_when: false
+      failed_when: systemctl_status.rc > 1
+
+    - name: Create tmp dir for docker-compose file
+      ansible.builtin.tempfile:
+        state: directory
+      register: tempdir
+      changed_when: false
+
+    - name: Create docker file for test deployment
+      ansible.builtin.copy:
+        content: |
+          version: '3.3'
+          services:
+            whoami:
+              image: traefik/whoami:latest
+              restart: unless-stopped
+        dest: "{{ tempdir.path }}/docker-compose.yml"
+      changed_when: false
+
+  roles:
+    - role: geerlingguy.docker
+      vars:
+        docker_install_compose_plugin: true
+    - role: tinyblargon.docker_deploy
+      vars:
+        docker_deploy_state: present
+        docker_deploy_source: "{{ tempdir.path }}"
