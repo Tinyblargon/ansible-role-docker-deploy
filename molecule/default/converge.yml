@@ -45,7 +45,3 @@
       vars:
         docker_deploy_state: present
         docker_deploy_source: "{{ tempdir.path }}"
-    - role: tinyblargon.docker_deploy
-      vars:
-        docker_deploy_state: absent
-        docker_deploy_source: "{{ tempdir.path }}"
