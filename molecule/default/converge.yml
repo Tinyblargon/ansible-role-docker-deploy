@@ -26,16 +26,18 @@
       ansible.builtin.tempfile:
         state: directory
       register: tempdir
+      changed_when: false
 
     - name: Create docker file for test deployment
       ansible.builtin.copy:
         content: |
           version: '3.3'
           services:
-            helloworld:
-              image: hello-world:latest
+            alpine:
+              image: alpine:latest
               restart: unless-stopped
         dest: "{{ tempdir.path }}/docker-compose.yml"
+      changed_when: false
 
   roles:
     # - role: geerlingguy.docker
