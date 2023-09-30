@@ -45,5 +45,15 @@
         docker_install_compose_plugin: true
     - role: tinyblargon.docker_deploy
       vars:
+        docker_deploy_files:
+          - dest: ".env"
+            content: |
+              VARIABLE1=VALUE1
+              VARIABLE2=VALUE2
+              VARIABLE3=VALUE3
+          # empty file will be created
+          - dest: "test"
+            mode: "0600"
+          - content: "this should be skipped"
         docker_deploy_state: present
         docker_deploy_source: "{{ tempdir.path }}"

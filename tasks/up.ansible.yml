@@ -21,9 +21,38 @@
     delete: true
     dirs: true
     recursive: true
-    rsync_opts: "{{ docker_deploy_rsync_opts }}"
-  register: docker_deploy_files_changed
+    rsync_opts: >-
+      {{
+        docker_deploy_rsync_opts +
+        (docker_deploy_files |
+          selectattr('dest', 'defined') |
+          map(attribute='dest') |
+          map('regex_replace', '^', '--exclude="') |
+          map('regex_replace', '$', '"') |
+          list)
+      }}
+  register: docker_deploy_rsync_changed
   become: true
+
+- name: Copy individual files and directories
+  ansible.builtin.copy:
+    content: >-
+      {{ item.content if item.content is defined else
+      "" if item.src is not defined else
+      omit }}
+    dest: "{{ docker_deploy_destination }}/{{ item.dest }}"
+    src: "{{ item.src if item.src is defined else omit }}"
+    owner: "{{ item.owner if item.owner is defined else 'root' }}"
+    group: "{{ item.group if item.group is defined else 'root' }}"
+    mode: "{{ item.mode if item.mode is defined else omit }}"
+  loop: "{{ docker_deploy_files }}"
+  when: item.dest is defined and item.dest != ""
+  become: true
+  register: docker_deploy_copy_changed
+  loop_control:
+    label: >-
+      {{ 'dest=\"' + item.dest + '\"' if item.dest is defined else
+      'no dest configured' }}
 
 - name: Docker compose up
   ansible.builtin.command: >-
@@ -32,10 +61,14 @@
     {{ '--compatibility' if docker_deploy_compatibility is true else '' }}
     up
     {{ '--build' if (docker_deploy_build is true
-      and docker_deploy_files_changed is changed) else '' }}
+    and (docker_deploy_rsync_changed is changed
+    or (docker_deploy_copy_changed is defined
+    and docker_deploy_copy_changed is changed))) else '' }}
     --detach
     {{ '--force-recreate' if (docker_deploy_recreate is true
-      and docker_deploy_files_changed is changed) else '' }}
+      and (docker_deploy_rsync_changed is changed
+      or (docker_deploy_copy_changed is defined
+      and docker_deploy_copy_changed is changed))) else '' }}
     --quiet-pull
     {{ '--remove-orphans' if docker_deploy_remove_orphans is true else '' }}
   notify: docker prune
