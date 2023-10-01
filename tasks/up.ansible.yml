@@ -51,7 +51,7 @@
   register: docker_deploy_copy_changed
   loop_control:
     label: >-
-      {{ 'dest=\"' + item.dest + '\"' if item.dest is defined else
+      {{ 'dest="' + item.dest + '"' if item.dest is defined else
       'no dest configured' }}
 
 - name: Docker compose up
