@@ -34,6 +34,23 @@
   register: docker_deploy_rsync_changed
   become: true
 
+- name: Create directories
+  ansible.builtin.file:
+    path: "{{ docker_deploy_destination }}/{{ item.dest | regex_replace('^(.*/)([^/]+)$', '\\1') | regex_replace('/$', '') }}"
+    state: directory
+    owner: "{{ item.owner if item.owner is defined else 'root' }}"
+    group: "{{ item.group if item.group is defined else 'root' }}"
+    mode: "{{ omit }}"
+  loop: "{{ docker_deploy_files }}"
+  when: >-
+    item.dest is defined and '/' in item.dest
+  become: true
+  loop_control:
+    label: >-
+      {{ 'dest="' + (item.dest | regex_replace('^(.*/)([^/]+)$', '\1') |
+      regex_replace('/$', '')) + '"'
+      if item.dest is defined else 'no dest configured' }}
+
 - name: Copy individual files and directories
   ansible.builtin.copy:
     content: >-
@@ -51,7 +68,7 @@
   register: docker_deploy_copy_changed
   loop_control:
     label: >-
-      {{ 'dest=\"' + item.dest + '\"' if item.dest is defined else
+      {{ 'dest="' + item.dest + '"' if item.dest is defined else
       'no dest configured' }}
 
 - name: Docker compose up
