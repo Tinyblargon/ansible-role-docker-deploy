@@ -55,7 +55,7 @@ When `content:` and `src:` are both unspecified, an empty file is created at the
 ```yaml
 - hosts: all
   roles:
-    - role: tinyblargon.docker_deploy
+    - role: Tinyblargon.docker_deploy
       vars:
         docker_deploy_source: "docker-deploy"
         docker_deploy_destination: "/opt/docker-deploy"
@@ -81,7 +81,7 @@ When `content:` and `src:` are both unspecified, an empty file is created at the
 ```yaml
 - hosts: all
   roles:
-    - role: tinyblargon.docker_deploy
+    - role: Tinyblargon.docker_deploy
       vars:
         docker_deploy_destination: "/opt/docker-deploy"
         docker_deploy_compose_file: "docker-compose.yml"

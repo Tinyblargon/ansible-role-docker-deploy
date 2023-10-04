@@ -7,7 +7,7 @@ on:
 
 defaults:
   run:
-    working-directory: 'tinyblargon.docker_deploy'
+    working-directory: 'Tinyblargon.docker_deploy'
 
 jobs:
 
@@ -18,7 +18,7 @@ jobs:
       - name: Check out the codebase.
         uses: actions/checkout@v2
         with:
-          path: 'tinyblargon.docker_deploy'
+          path: 'Tinyblargon.docker_deploy'
 
       - name: Set up Python 3.
         uses: actions/setup-python@v2
