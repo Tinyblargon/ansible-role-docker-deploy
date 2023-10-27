@@ -18,12 +18,12 @@
     checksum: true
     owner: false
     group: false
-    delete: true
+    delete: false
     dirs: true
     recursive: true
     rsync_opts: >-
       {{
-        docker_deploy_rsync_opts +
+        ['--delete'] + docker_deploy_rsync_opts +
         (docker_deploy_files |
           selectattr('dest', 'defined') |
           map(attribute='dest') |
