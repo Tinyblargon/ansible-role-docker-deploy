@@ -27,6 +27,7 @@
         (docker_deploy_files |
           selectattr('dest', 'defined') |
           map(attribute='dest') |
+          map('regex_replace', '^./', '') |
           map('regex_replace', '^', '--exclude="') |
           map('regex_replace', '$', '"') |
           list)
