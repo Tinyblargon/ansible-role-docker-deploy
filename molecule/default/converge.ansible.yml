@@ -57,5 +57,9 @@
           - content: "this should be skipped"
           - dest: "file/inside/folder"
             content: "this is a file inside a folder"
+          - dest: ./test1
+            content: test
+          - dest: ./folder/test2
+            content: test
         docker_deploy_state: present
         docker_deploy_source: "{{ tempdir.path }}"
