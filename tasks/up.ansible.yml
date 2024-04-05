@@ -71,28 +71,38 @@
       {{ 'dest="' + item.dest + '"' if item.dest is defined else
       'no dest configured' }}
 
-- name: Docker compose up
-  ansible.builtin.command: >-
-    {{ docker_deploy_compose_command }}
-    --file {{ docker_deploy_destination }}/{{ docker_deploy_compose_file }}
-    {{ '--compatibility' if docker_deploy_compatibility is true else '' }}
-    up
-    {{ '--build' if (docker_deploy_build is true
-    and (docker_deploy_rsync_changed is changed
-    or (docker_deploy_copy_changed is defined
-    and docker_deploy_copy_changed is changed))) else '' }}
-    --detach
-    {{ '--force-recreate' if (docker_deploy_recreate is true
-      and (docker_deploy_rsync_changed is changed
-      or (docker_deploy_copy_changed is defined
-      and docker_deploy_copy_changed is changed))) else '' }}
-    --quiet-pull
-    {{ '--remove-orphans' if docker_deploy_remove_orphans is true else '' }}
-  notify: docker prune
-  register: command_result
-  become: true
-  changed_when: |
-    ("Created" in command_result.stderr) or
-    ("Recreated" in command_result.stderr) or
-    ("Removed" in command_result.stderr) or
-    ("Started" in command_result.stderr)
+- name: Attempt to bring up docker containers
+  block:
+    - name: Docker compose up
+      ansible.builtin.command: >-
+        {{ docker_deploy_compose_command }}
+        --file {{ docker_deploy_destination }}/{{ docker_deploy_compose_file }}
+        {{ '--compatibility' if docker_deploy_compatibility is true else '' }}
+        up
+        {{ '--build' if (docker_deploy_build is true
+        and (docker_deploy_rsync_changed is changed
+        or (docker_deploy_copy_changed is defined
+        and docker_deploy_copy_changed is changed))) else '' }}
+        --detach
+        {{ '--force-recreate' if (docker_deploy_recreate is true
+          and (docker_deploy_rsync_changed is changed
+          or (docker_deploy_copy_changed is defined
+          and docker_deploy_copy_changed is changed))) else '' }}
+        --quiet-pull
+        {{ '--remove-orphans' if docker_deploy_remove_orphans is true else '' }}
+      notify: docker prune
+      register: command_result
+      become: true
+      no_log: true
+      changed_when: |
+        ("Created" in command_result.stderr) or
+        ("Recreated" in command_result.stderr) or
+        ("Removed" in command_result.stderr) or
+        ("Started" in command_result.stderr)
+  rescue:
+    - name: Display compose command
+      ansible.builtin.debug:
+        msg: "{{ ansible_failed_result.cmd | join(' ') }}"
+    - name: Display error message
+      ansible.builtin.fail:
+        msg: "{{ ansible_failed_result.stderr | regex_replace('^\\s+', '') }}"
