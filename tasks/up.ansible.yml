@@ -44,7 +44,7 @@
     mode: "{{ omit }}"
   loop: "{{ docker_deploy_files }}"
   when: >-
-    item.dest is defined and '/' in item.dest
+    item.dest is defined and '/' in item.dest | regex_replace('^./', '')
   become: true
   loop_control:
     label: >-
