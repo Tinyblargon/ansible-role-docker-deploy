@@ -45,6 +45,7 @@ Ansible role to deploy a docker compose stack (file).
 | mode:            | string  |                  | The permissions of the destination file or directory. [Ansible documentation for further details](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html#parameter-mode) |
 | owner:           | string  | "root"           | Name of the user that should own the filesystem object, as would be fed to chown. Specifying a numeric username will be assumed to be a user ID and not a username. Avoid numeric usernames to avoid this confusion.|
 | src:             | string  |                  | Local path to a file to copy to the remote server. This can be absolute or relative. If path is a directory, it is copied recursively. In this case, if path ends with “/”, only inside contents of that directory are copied to destination. Otherwise, if it does not end with “/”, the directory itself with all contents is copied. This behavior is similar to the rsync command line tool.|
+| no_log:          | bool    | false            | If `true`, the content can not be logged.|
 
 When `content:` and `src:` are both unspecified, an empty file is created at the destination.
 
@@ -68,6 +69,7 @@ When `content:` and `src:` are both unspecified, an empty file is created at the
             owner: "root"
             group: "root"
             mode: "0600"
+            no_log: true
         docker_deploy_compatibility: true
         docker_deploy_remove_orphans: true
         docker_deploy_recreate: true
