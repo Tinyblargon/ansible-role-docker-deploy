@@ -61,5 +61,8 @@
             content: test
           - dest: ./folder/test2
             content: test
+          - dest: ./.secrets/my_secret
+            content: secret_value
+            no_log: true
         docker_deploy_state: present
         docker_deploy_source: "{{ tempdir.path }}"
