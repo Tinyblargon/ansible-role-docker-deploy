@@ -51,6 +51,7 @@
       {{ 'dest="' + (item.dest | regex_replace('^(.*/)([^/]+)$', '\1') |
       regex_replace('/$', '')) + '"'
       if item.dest is defined else 'no dest configured' }}
+  no_log: "{{ item.no_log | default(false) }}"
 
 - name: Copy individual files and directories
   ansible.builtin.copy:
@@ -71,6 +72,7 @@
     label: >-
       {{ 'dest="' + item.dest + '"' if item.dest is defined else
       'no dest configured' }}
+  no_log: "{{ item.no_log | default(false) }}"
 
 - name: Attempt to bring up docker containers
   block:
