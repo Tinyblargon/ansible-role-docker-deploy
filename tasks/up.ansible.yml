@@ -10,6 +10,13 @@
   become: true
   when: ansible_os_family == 'Debian'
 
+- name: Ensure destination directory exists
+  ansible.builtin.file:
+    path: "{{ docker_deploy_destination }}"
+    state: directory
+    mode: '0755'
+  become: true
+
 - name: Copy the deployment
   ansible.posix.synchronize:
     src: "{{ docker_deploy_source }}/"
