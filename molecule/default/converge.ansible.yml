@@ -37,6 +37,7 @@
               image: traefik/whoami:latest
               restart: unless-stopped
         dest: "{{ tempdir.path }}/docker-compose.yml"
+        mode: "0644"
       changed_when: false
 
   roles:
