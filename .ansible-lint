@@ -1,0 +1,4 @@
+---
+skip_list:
+  - command-instead-of-module
+  - role-name
