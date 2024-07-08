@@ -109,6 +109,19 @@
         ("Recreated" in command_result.stderr) or
         ("Removed" in command_result.stderr) or
         ("Started" in command_result.stderr)
+
+    - name: Show warnings
+      ansible.builtin.debug:
+        msg: "{{ item | regex_replace('.*msg=\"(.*)\"$', '\\1') }}"
+      loop: >-
+        {{ command_result.stderr_lines | select('match', '.*level=warning')
+        | list }}
+      loop_control:
+        label: "Warning"
+      when:
+        command_result.stderr_lines is defined
+        and docker_deploy_show_warnings is true
+      changed_when: true
   rescue:
     - name: Display compose command
       ansible.builtin.debug:
