@@ -1,2 +1,8 @@
 ---
 docker_deploy_compose_command: "docker compose"
+
+docker_deploy_warnings: >-
+  {{ docker_deploy_command_result.stderr_lines
+  | select('match', '.*level=warning.*msg=\"(.*)\".*')
+  | map('regex_replace', '.*msg=\"(.*)\"$', '\1')
+  | list }}

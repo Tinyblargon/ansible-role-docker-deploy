@@ -11,5 +11,6 @@ docker_deploy_compose_plugin: true
 docker_deploy_prune: ["image"]
 docker_deploy_state: "present"
 docker_deploy_rsync_opts: ['--exclude="*.example"']
+docker_deploy_show_warnings: true
 docker_deploy_absent_volume: false
 docker_deploy_absent_remove: false
