@@ -111,17 +111,11 @@
         ("Started" in docker_deploy_command_result.stderr)
 
     - name: Show warnings
-      ansible.builtin.debug:
-        msg: "{{ item | regex_replace('.*msg=\"(.*)\"$', '\\1') }}"
-      loop: >-
-        {{ docker_deploy_command_result.stderr_lines | select('match', '.*level=warning')
-        | list }}
-      loop_control:
-        label: "Warning"
+      ansible.builtin.include_tasks: warning.ansible.yml
       when:
-        docker_deploy_command_result.stderr_lines is defined
-        and docker_deploy_show_warnings is true
-      changed_when: true
+        docker_deploy_show_warnings is true
+        and docker_deploy_command_result.stderr_lines is defined
+        and docker_deploy_warnings | length > 0
   rescue:
     - name: Display compose command
       ansible.builtin.debug:

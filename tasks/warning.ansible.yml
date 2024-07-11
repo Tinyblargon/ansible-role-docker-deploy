@@ -1,0 +1,12 @@
+---
+- name: Docker compose warnings found
+  ansible.builtin.fail:
+    msg: "docker compose warnings found"
+  ignore_errors: true
+
+- name: Docker compose warnings
+  ansible.builtin.debug:
+    msg: "{{ item }}"
+  loop: "{{ docker_deploy_warnings }}"
+  loop_control:
+    label: "WARNING"
