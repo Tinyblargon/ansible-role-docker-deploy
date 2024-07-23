@@ -44,7 +44,7 @@
     - role: geerlingguy.docker
       vars:
         docker_install_compose_plugin: true
-    - role: Tinyblargon.docker_deploy
+    - role: tinyblargon.docker_deploy
       vars:
         docker_deploy_files:
           - dest: ".env"
