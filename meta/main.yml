@@ -4,6 +4,7 @@ collections:
 
 galaxy_info:
   role_name: docker_deploy
+  namespace: tinyblargon
   author: Tinyblargon
   description: Ansible role to deploy a docker compose stack (file).
   license: MIT
