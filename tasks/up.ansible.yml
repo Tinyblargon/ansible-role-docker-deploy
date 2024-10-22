@@ -14,7 +14,7 @@
   ansible.builtin.file:
     path: "{{ docker_deploy_destination }}"
     state: directory
-    mode: '0755'
+    mode: "0755"
   become: true
 
 - name: Copy the deployment
@@ -108,8 +108,7 @@
 
     - name: Show warnings
       ansible.builtin.include_tasks: warning.ansible.yml
-      when:
-        docker_deploy_show_warnings is true
+      when: docker_deploy_show_warnings is true
         and docker_deploy_command_result.stderr_lines is defined
         and docker_deploy_warnings | length > 0
   rescue:
