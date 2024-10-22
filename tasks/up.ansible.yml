@@ -96,6 +96,8 @@
           and docker_deploy_files_changed) else '' }}
         --quiet-pull
         {{ '--remove-orphans' if docker_deploy_remove_orphans is true else '' }}
+        {{ '--renew-anon-volumes' if (docker_deploy_recreate_anon is true
+          and docker_deploy_files_changed) else '' }}
       notify: docker prune
       register: docker_deploy_command_result
       become: true
