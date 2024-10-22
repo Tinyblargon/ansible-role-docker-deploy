@@ -6,3 +6,8 @@ docker_deploy_warnings: >-
   | select('match', '.*level=warning.*msg=\"(.*)\".*')
   | map('regex_replace', '.*msg=\"(.*)\"$', '\1')
   | list }}
+
+docker_deploy_files_changed: >-
+  {{ docker_deploy_rsync_changed is changed
+    or (docker_deploy_copy_changed is defined
+      and docker_deploy_copy_changed is changed) }}
