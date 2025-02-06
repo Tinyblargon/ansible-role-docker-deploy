@@ -117,6 +117,11 @@
     - name: Display compose command
       ansible.builtin.debug:
         msg: "{{ ansible_failed_result.cmd | join(' ') }}"
-    - name: Display error message
-      ansible.builtin.fail:
-        msg: "{{ ansible_failed_result.stderr | regex_replace('^\\s+', '') }}"
+    - name: Display compose log & error message
+      ansible.builtin.debug:
+        msg:
+          compose_log: "{{ ansible_failed_result.stdout | split('\n') }}"
+          error_message: "{{ ansible_failed_result.stderr | split('\n')
+            | map('regex_replace', '^\\s+', '')
+            | map('regex_replace', '\\s+$', '') }}"
+      failed_when: true
