@@ -2,9 +2,15 @@
 name: CI
 'on':
   pull_request:
+    paths-ignore:
+      - '*.md'
+      - '.gitignore'
   push:
     branches:
       - main
+    paths-ignore:
+      - '*.md'
+      - '.gitignore'
   schedule:
     - cron: "0 9 * * 1"
 
