@@ -8,18 +8,18 @@ galaxy_info:
   author: Tinyblargon
   description: Ansible role to deploy a docker compose stack (file).
   license: MIT
-  min_ansible_version: '2.14.1'
+  min_ansible_version: "2.14.1"
   platforms:
     - name: Debian
       versions:
-        - buster
-        - bullseye
+        - trixie
         - bookworm
+        - bullseye
     - name: Ubuntu
       versions:
-        - bionic
-        - focal
+        - noble
         - jammy
+        - focal
   galaxy_tags:
     - docker
     - compose
