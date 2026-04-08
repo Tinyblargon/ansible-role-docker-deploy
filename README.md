@@ -1,5 +1,7 @@
 # Ansible Role: docker_deploy
 
+[![CI](https://github.com/Tinyblargon/ansible-role-docker-deploy/actions/workflows/ci.yml/badge.svg)](https://github.com/Tinyblargon/ansible-role-docker-deploy)
+
 Ansible role to deploy a docker compose stack (file).
 
 ## Requirements
