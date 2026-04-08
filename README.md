@@ -1,4 +1,4 @@
-# Ansible Role: docker deploy
+# Ansible Role: docker_deploy
 
 Ansible role to deploy a docker compose stack (file).
 
