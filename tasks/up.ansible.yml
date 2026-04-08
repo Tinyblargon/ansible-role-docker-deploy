@@ -8,7 +8,7 @@
     update_cache: true
   register: apt_action
   become: true
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts['os_family'] == 'Debian'
 
 - name: Ensure destination directory exists
   ansible.builtin.file:
